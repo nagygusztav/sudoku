@@ -7,6 +7,7 @@ import hu.nagygusztav.sudoku.struktura.tabla.AbsztraktTábla;
 import hu.nagygusztav.sudoku.struktura.tabla.KilencszerKilencesTábla;
 import hu.nagygusztav.sudoku.struktura.tabla.NégyszerNégyesTábla;
 import hu.nagygusztav.sudoku.tesztelo.Tesztelő;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,16 +15,16 @@ import hu.nagygusztav.sudoku.tesztelo.Tesztelő;
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
+    private static final Logger LOG = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) {
-        // Megoldva: 
 
         // Teszt:
         AbsztraktTábla tábla = new KilencszerKilencesTábla(
                 Feladvány.kilencszerKilencesek[4]);
+
         if (!Tesztelő.érvényesE(tábla)) {
+            LOG.fine("A feladvány érvénytelen.");
             return;
         }
 
@@ -31,6 +32,7 @@ public class Main {
         megoldó.megold(tábla);
 
         if (!Tesztelő.érvényesE(tábla)) {
+            LOG.fine("A megoldás hibába ütközött.");
             return;
         }
 

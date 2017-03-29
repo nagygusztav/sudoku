@@ -1,8 +1,10 @@
 package hu.nagygusztav.sudoku.struktura.tabla;
 
+import hu.nagygusztav.sudoku.muvelet.LehetőségTörölveMűvelet;
 import hu.nagygusztav.sudoku.struktura.Cella;
 import hu.nagygusztav.sudoku.struktura.SorOszlopBlokk;
 import java.util.BitSet;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,6 +16,8 @@ abstract class TéglalapTábla extends AbsztraktTábla {
     protected final int oszlopokSzáma;
     protected final int elemszám;
 
+    private static final Logger LOG = Logger.getLogger(TéglalapTábla.class.getName());
+    
     protected final BitSet TELJES_CELLA_BITSET = new BitSet();
 
     protected final Cella[][] cellák;

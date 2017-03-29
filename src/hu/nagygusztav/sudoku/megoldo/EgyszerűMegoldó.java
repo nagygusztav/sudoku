@@ -11,12 +11,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Nagy Gusztáv
  */
 public class EgyszerűMegoldó extends AbsztraktMegoldó {
+
+    private static final Logger LOG = Logger.getLogger(EgyszerűMegoldó.class.getName());
 
     /**
      * Megoldást keres elemi lépéseket követve.
@@ -25,21 +28,21 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
      */
     @Override
     public void megold(AbsztraktTábla tábla) {
-        System.out.println("Megold:");
+        LOG.info("megold");
 
         int korábbiHelyéreKerültElemekSzáma = tábla.helyéreKerültElemekSzáma();
         while (!tábla.megoldva()) {
 
-            // Műveletsor feldolgozása
+            // Műveletsor feldolgozása (NakedSingle)
             if (tábla.vanMégMűvelet()) {
                 műveletFeldolgozó(tábla);
             }
 
-            // Van olyan sor/oszlop/blokk, amiben egyedi elem van?
+            // Van olyan sor/oszlop/blokk, amiben egyedi elem van? (HiddenSingle)
             egyediCellaKeresés(tábla);
 
             if (korábbiHelyéreKerültElemekSzáma == tábla.helyéreKerültElemekSzáma()) { // nincs javulás
-                System.out.println("Nem sikerült megoldani :-(");
+                LOG.info("Nem sikerült megoldani :-(");
                 break;
             }
             korábbiHelyéreKerültElemekSzáma = tábla.helyéreKerültElemekSzáma();
@@ -49,7 +52,7 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
     private void műveletFeldolgozó(AbsztraktTábla tábla) {
         AbsztraktMűvelet művelet = tábla.következőMűvelet();
         while (művelet != null) {
-            if (művelet instanceof LehetőségTörölveMűvelet) {
+            if (művelet instanceof LehetőségTörölveMűvelet) { // NakedSingle
                 LehetőségTörölveMűvelet lehetőségTörölveMűvelet = (LehetőségTörölveMűvelet) művelet;
                 lehetőségekTörlése(lehetőségTörölveMűvelet);
                 if (!Tesztelő.érvényesE(tábla)) {
@@ -65,10 +68,10 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
         Cella cellaTörölt = lehetőségTörölveMűvelet.getCella();
         int töröltLehetőség = lehetőségTörölveMűvelet.getTöröltLehetőség();
         if (cellaTörölt.lehetMég(töröltLehetőség)) {
-            System.out.println("Művelet: " + lehetőségTörölveMűvelet);
+//            System.out.println("Művelet: " + lehetőségTörölveMűvelet);
             for (Iterator<SorOszlopBlokk> iSob = cellaTörölt.sorOszlopBlokkBejáró(); iSob.hasNext();) {
                 SorOszlopBlokk blokk = iSob.next();
-                System.out.println("Töröl SOB-ból: " + blokk + '\n');
+//                System.out.println("Töröl SOB-ból: " + blokk + '\n');
                 for (Iterator<Cella> iCella = blokk.cellaBejáró(); iCella.hasNext();) {
                     Cella cellaTörölhető = iCella.next();
                     if (cellaTörölhető.töröl(töröltLehetőség)) {
@@ -80,7 +83,7 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
         }
     }
 
-    private void egyediCellaKeresés(AbsztraktTábla tábla) {
+    private void egyediCellaKeresés(AbsztraktTábla tábla) { 
 
         // Minden cellát csak "egyszer szabad megtalálni"
         Set<Cella> egyediCellák = new HashSet<>();

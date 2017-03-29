@@ -2,6 +2,7 @@ package hu.nagygusztav.sudoku.muvelet;
 
 import hu.nagygusztav.sudoku.struktura.Cella;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * Az osztály példányai jelzik a
@@ -10,6 +11,7 @@ import java.util.Objects;
  */
 public class LehetőségTörölveMűvelet extends AbsztraktMűvelet {
 
+    private static final Logger LOG = Logger.getLogger(LehetőségTörölveMűvelet.class.getName());
     private final Cella cella;
     private final int töröltLehetőség;
 

@@ -3,6 +3,7 @@ package hu.nagygusztav.sudoku.struktura.tabla;
 import hu.nagygusztav.sudoku.struktura.Cella;
 import hu.nagygusztav.sudoku.struktura.Koordináta;
 import hu.nagygusztav.sudoku.struktura.SorOszlopBlokk;
+import java.util.logging.Logger;
 
 /**
  *
@@ -10,6 +11,8 @@ import hu.nagygusztav.sudoku.struktura.SorOszlopBlokk;
  */
 public class NégyszerNégyesTábla extends TéglalapTábla {
 
+    private static final Logger LOG = Logger.getLogger(NégyszerNégyesTábla.class.getName());
+    
     private static final Koordináta[] BLOKK_KEZDOKOORDINATAK = {
         new Koordináta(1, 1),
         new Koordináta(1, 3),

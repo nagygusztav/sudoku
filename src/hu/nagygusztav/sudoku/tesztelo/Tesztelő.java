@@ -4,14 +4,17 @@ import hu.nagygusztav.sudoku.struktura.Cella;
 import hu.nagygusztav.sudoku.struktura.SorOszlopBlokk;
 import hu.nagygusztav.sudoku.struktura.tabla.AbsztraktTábla;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 /**
- * Az osztály célja egyszerű tesztek megvalósítása. 
- * (Később lehet belőle Unit Test is?!)
+ * Az osztály célja egyszerű tesztek megvalósítása. (Később lehet belőle Unit
+ * Test is?!)
  *
  * @author nagy.gusztav
  */
 public class Tesztelő {
+
+    private static final Logger LOG = Logger.getLogger(Tesztelő.class.getName());
 
     public static boolean érvényesE(AbsztraktTábla tábla) {
         System.out.println("Érvényes-e ellenőrzés: ");
