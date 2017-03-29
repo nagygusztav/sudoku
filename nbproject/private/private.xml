@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/struktura/Cella.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/struktura/tabla/KilencszerKilencesTábla.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/feladvany/Feladvány.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/muvelet/AbsztraktMűvelet.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/struktura/Koordináta.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/Main.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/struktura/SorOszlopBlokk.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/tesztelo/Tesztelő.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/megoldo/AbsztraktMegoldó.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/struktura/tabla/NégyszerNégyesTábla.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/struktura/tabla/TéglalapTábla.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/muvelet/LehetőségTörölveMűvelet.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/struktura/tabla/AbsztraktTábla.java</file>
+            <file>file:/C:/Adatok/Programok/20170325_Sudoku/src/hu/nagygusztav/sudoku/megoldo/EgyszerűMegoldó.java</file>
+        </group>
+    </open-files>
+</project-private>
