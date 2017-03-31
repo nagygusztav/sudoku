@@ -4,6 +4,7 @@ import hu.nagygusztav.sudoku.struktura.Cella;
 import hu.nagygusztav.sudoku.struktura.SorOszlopBlokk;
 import hu.nagygusztav.sudoku.struktura.tabla.AbsztraktTábla;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -17,8 +18,8 @@ public class Tesztelő {
     private static final Logger LOG = Logger.getLogger(Tesztelő.class.getName());
 
     public static boolean érvényesE(AbsztraktTábla tábla) {
-        System.out.println("Érvényes-e ellenőrzés: ");
-        System.out.println(tábla);
+        LOG.info("Érvényes-e ellenőrzés: \n");
+        LOG.info(tábla.toString());
         boolean vissza = true;
         for (Iterator<SorOszlopBlokk> iSob = tábla.sorOszlopBlokkokBejáró(); iSob.hasNext();) {
             SorOszlopBlokk blokk = iSob.next();
@@ -32,18 +33,18 @@ public class Tesztelő {
             for (int i = 1; i <= tábla.elemszám(); i++) {
                 if (előfordulások[i] > 1) {
                     vissza = false;
-                    System.out.println("Többszörös előfordulás (" + i + ") ebben: " + blokk);
+                    LOG.log(Level.INFO, "T\u00f6bbsz\u00f6r\u00f6s el\u0151fordul\u00e1s ({0}) ebben: {1}", new Object[]{i, blokk});
                 }
             }
         }
-        System.out.println(vissza ? "Ok." : "Hibás.");
+        LOG.info(vissza ? "Ok." : "Hibás.");
 
         return vissza;
     }
 
     public static boolean elkészültE(AbsztraktTábla tábla) {
-        System.out.println("Elkészült-e ellenőrzés: ");
-        System.out.println(tábla);
+        LOG.info("Elkészült-e ellenőrzés: ");
+        LOG.info(tábla.tartalomEllenőrzéshez());
         boolean vissza = true;
         for (Iterator<SorOszlopBlokk> iSob = tábla.sorOszlopBlokkokBejáró(); iSob.hasNext();) {
             SorOszlopBlokk blokk = iSob.next();
@@ -51,11 +52,11 @@ public class Tesztelő {
                 Cella cella = iCella.next();
                 if (!cella.kitöltve()) {
                     vissza = false;
-                    System.out.println("Nincs kitöltve: " + cella);
+                    LOG.info("Nincs kitöltve: " + cella);
                 }
             }
         }
-        System.out.println(vissza ? "Elkészült." : "Nem készült el.");
+        LOG.info(vissza ? "Elkészült." : "Nem készült el.");
 
         return vissza;
     }

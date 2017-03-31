@@ -1,6 +1,5 @@
 package hu.nagygusztav.sudoku.struktura.tabla;
 
-import hu.nagygusztav.sudoku.muvelet.LehetőségTörölveMűvelet;
 import hu.nagygusztav.sudoku.struktura.Cella;
 import hu.nagygusztav.sudoku.struktura.SorOszlopBlokk;
 import java.util.BitSet;
@@ -17,8 +16,8 @@ abstract class TéglalapTábla extends AbsztraktTábla {
     protected final int elemszám;
 
     private static final Logger LOG = Logger.getLogger(TéglalapTábla.class.getName());
-    
-    protected final BitSet TELJES_CELLA_BITSET = new BitSet();
+
+//    protected final BitSet TELJES_CELLA_BITSET = new BitSet();
 
     protected final Cella[][] cellák;
 
@@ -28,16 +27,15 @@ abstract class TéglalapTábla extends AbsztraktTábla {
         this.oszlopokSzáma = oszlopokSzáma;
         this.elemszám = elemszám;
 
-        for (int i = 1; i <= elemszám; i++) {
-            TELJES_CELLA_BITSET.set(i);
-        }
+//        for (int i = 1; i <= elemszám; i++) {
+//            TELJES_CELLA_BITSET.set(i);
+//        }
 
         // Cellák létrehozása
         cellák = new Cella[sorokSzáma + 1][oszlopokSzáma + 1];
         for (int sor = 1; sor <= sorokSzáma; sor++) {
             for (int oszlop = 1; oszlop <= oszlopokSzáma; oszlop++) {
-                cellák[sor][oszlop] = new Cella(sor + "x" + oszlop,
-                        (BitSet) TELJES_CELLA_BITSET.clone(), this);
+                cellák[sor][oszlop] = new Cella(sor + "x" + oszlop, elemszám, this);
             }
         }
 
@@ -65,16 +63,20 @@ abstract class TéglalapTábla extends AbsztraktTábla {
     }
 
     @Override
-    public void kiírTartalomEllenőrzéshez() {
-        System.out.println("Helyére került: " + helyéreKerültElemekSzáma
-                + " Hátra van: " + (elemszám * elemszám - helyéreKerültElemekSzáma));
+    public String tartalomEllenőrzéshez() {
+        StringBuilder író = new StringBuilder();
+        író.append("Helyére került: ").append(helyéreKerültElemekSzáma)
+                .append("\n Hátra van: ").append(elemszám * elemszám - helyéreKerültElemekSzáma)
+                .append("\n");
+
         for (int sor = 1; sor <= sorokSzáma; sor++) {
             for (int oszlop = 1; oszlop <= oszlopokSzáma; oszlop++) {
-                System.out.print(cellák[sor][oszlop].toString() + " ");
+                író.append(cellák[sor][oszlop].toString()).append(" ");
             }
-            System.out.println();
+            író.append('\n');
         }
-        System.out.println();
+        író.append('\n');
+        return író.toString();
     }
 
     @Override
@@ -85,5 +87,5 @@ abstract class TéglalapTábla extends AbsztraktTábla {
     @Override
     public int cellaszám() {
         return sorokSzáma * oszlopokSzáma;
-    }
+    }    
 }

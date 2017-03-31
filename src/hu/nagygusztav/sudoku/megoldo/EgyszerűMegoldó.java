@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -59,7 +60,7 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
                     return;
                 }
             }
-            tábla.kiírTartalomEllenőrzéshez();
+            LOG.info(tábla.tartalomEllenőrzéshez());
             művelet = tábla.következőMűvelet();
         }
     }
@@ -68,14 +69,12 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
         Cella cellaTörölt = lehetőségTörölveMűvelet.getCella();
         int töröltLehetőség = lehetőségTörölveMűvelet.getTöröltLehetőség();
         if (cellaTörölt.lehetMég(töröltLehetőség)) {
-//            System.out.println("Művelet: " + lehetőségTörölveMűvelet);
             for (Iterator<SorOszlopBlokk> iSob = cellaTörölt.sorOszlopBlokkBejáró(); iSob.hasNext();) {
                 SorOszlopBlokk blokk = iSob.next();
-//                System.out.println("Töröl SOB-ból: " + blokk + '\n');
                 for (Iterator<Cella> iCella = blokk.cellaBejáró(); iCella.hasNext();) {
                     Cella cellaTörölhető = iCella.next();
                     if (cellaTörölhető.töröl(töröltLehetőség)) {
-//                                tábla.kiírTartalomEllenőrzéshez();
+                        ;
                     }
                 }
             }
@@ -112,7 +111,7 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
                 if (számokElőfordulása[i].size() == 1) {
                     Cella cella = számokElőfordulása[i].get(0);
                     if (!egyediCellák.contains(cella)) {
-                        System.out.println("Van egyedi cella (" + cella + " / " + i + ") itt: " + sorOszlopBlokk);
+                        LOG.log(Level.INFO, "Van egyedi cella ({0} / {1}) itt: {2}", new Object[]{cella, i, sorOszlopBlokk});
                         cella.kitölt(i);
                         egyediCellák.add(cella);
                     }

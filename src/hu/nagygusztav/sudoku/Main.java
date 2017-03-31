@@ -9,19 +9,23 @@ import hu.nagygusztav.sudoku.struktura.tabla.NégyszerNégyesTábla;
 import hu.nagygusztav.sudoku.tesztelo.Tesztelő;
 import java.util.logging.Logger;
 
+
+
 /**
  *
  * @author Nagy Gusztáv
  */
 public class Main {
-
+    
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
 
         // Teszt:
-        AbsztraktTábla tábla = new KilencszerKilencesTábla(
-                Feladvány.kilencszerKilencesek[4]);
+//        AbsztraktTábla tábla = new KilencszerKilencesTábla(
+//                Feladvány.kilencszerKilencesek[4]);
+        AbsztraktTábla tábla = new NégyszerNégyesTábla(
+                Feladvány.négyszerNégyesek[0]);
 
         if (!Tesztelő.érvényesE(tábla)) {
             LOG.fine("A feladvány érvénytelen.");
@@ -37,8 +41,8 @@ public class Main {
         }
 
         if (!Tesztelő.elkészültE(tábla)) {
-            System.out.println("Eddig jutott:");
-            tábla.kiírTartalomEllenőrzéshez();
+            LOG.info("Eddig jutott:\n");
+            LOG.info(tábla.tartalomEllenőrzéshez());
         }
     }
 }

@@ -27,7 +27,7 @@ public class NégyszerNégyesTábla extends TéglalapTábla {
         new Koordináta(1, 1)
     };
 
-    public NégyszerNégyesTábla() {
+    private NégyszerNégyesTábla() {
         super(4, 4, 4);
 
         // blokkok

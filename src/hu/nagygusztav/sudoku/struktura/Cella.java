@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Cella {
 
     private static final Logger LOG = Logger.getLogger(Cella.class.getName());
-    
+
     public static final int NINCSKITOLTVE = 0;
 
     private boolean kitöltve = false;
@@ -24,16 +24,21 @@ public class Cella {
     private final List<SorOszlopBlokk> sorOszlopBlokkokRésze = new ArrayList<>();
     private int adat = NINCSKITOLTVE;
     private final BitSet lehetőségek;
+    private int lehetőségekSzáma;
     private final AbsztraktTábla tábla;
 
     /**
      * @param szövegesAzonosító
-     * @param lehetőségek
+     * @param lehetőségekSzáma
      * @param tábla
      */
-    public Cella(String szövegesAzonosító, BitSet lehetőségek, AbsztraktTábla tábla) {
+    public Cella(String szövegesAzonosító, int lehetőségekSzáma, AbsztraktTábla tábla) {
         this.szövegesAzonosító = szövegesAzonosító;
-        this.lehetőségek = lehetőségek;
+        lehetőségek = new BitSet();
+        this.lehetőségekSzáma = lehetőségekSzáma;
+        for (int i = 1; i <= lehetőségekSzáma; i++) {
+            lehetőségek.set(i);
+        }
         this.tábla = tábla;
     }
 
@@ -119,6 +124,7 @@ public class Cella {
         int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.szövegesAzonosító);
         hash = 97 * hash + Objects.hashCode(this.tábla);
+        hash = 97 * hash + lehetőségekSzáma;
         return hash;
     }
 
@@ -134,6 +140,9 @@ public class Cella {
             return false;
         }
         final Cella other = (Cella) obj;
+        if (lehetőségekSzáma != other.lehetőségekSzáma) {
+            return false;
+        }
         if (!Objects.equals(this.szövegesAzonosító, other.szövegesAzonosító)) {
             return false;
         }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,10 +18,11 @@ public abstract class AbsztraktTábla {
 
     public abstract int cellaszám();
 
-    public abstract void kiírTartalomEllenőrzéshez();
+    public abstract String tartalomEllenőrzéshez();
 
     protected final List<AbsztraktMűvelet> műveletSor = new LinkedList<>();
     protected final List<SorOszlopBlokk> sorOszlopBlokkok = new ArrayList<>();
+    private static final Logger LOG = Logger.getLogger(AbsztraktTábla.class.getName());
 
     protected int helyéreKerültElemekSzáma = 0;
 
@@ -42,15 +44,14 @@ public abstract class AbsztraktTábla {
      *
      * @param művelet
      */
-
     public void újMűvelet(AbsztraktMűvelet művelet) {
         műveletSor.add(művelet);
     }
 
     public void kiírMűveletek() {
-        System.out.println("Várakozó műveletek:");
+        LOG.info("Várakozó műveletek:");
         műveletSor.forEach((művelet) -> {
-            System.out.println(művelet);
+            LOG.info(művelet.toString());
         });
     }
 
