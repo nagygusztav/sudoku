@@ -22,10 +22,10 @@ public class Main {
     public static void main(String[] args) {
 
         // Teszt:
-//        AbsztraktTábla tábla = new KilencszerKilencesTábla(
-//                Feladvány.kilencszerKilencesek[4]);
-        AbsztraktTábla tábla = new NégyszerNégyesTábla(
-                Feladvány.négyszerNégyesek[0]);
+        AbsztraktTábla tábla = new KilencszerKilencesTábla(
+                Feladvány.kilencszerKilencesek[4]);
+//        AbsztraktTábla tábla = new NégyszerNégyesTábla(
+//                Feladvány.négyszerNégyesek[0]);
 
         if (!Tesztelő.érvényesE(tábla)) {
             LOG.fine("A feladvány érvénytelen.");

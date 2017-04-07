@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,8 +40,11 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
                 műveletFeldolgozó(tábla);
             }
 
-            // Van olyan sor/oszlop/blokk, amiben egyedi elem van? (HiddenSingle)
+            // HiddenSingle
             egyediCellaKeresés(tábla);
+
+            // Intersection
+            mettszetKeresés(tábla);
 
             if (korábbiHelyéreKerültElemekSzáma == tábla.helyéreKerültElemekSzáma()) { // nincs javulás
                 LOG.info("Nem sikerült megoldani :-(");
@@ -82,7 +86,12 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
         }
     }
 
-    private void egyediCellaKeresés(AbsztraktTábla tábla) { 
+    /**
+     * Van olyan sor/oszlop/blokk, amiben egyedi elem van? (HiddenSingle)
+     *
+     * @param tábla
+     */
+    private void egyediCellaKeresés(AbsztraktTábla tábla) {
 
         // Minden cellát csak "egyszer szabad megtalálni"
         Set<Cella> egyediCellák = new HashSet<>();
@@ -117,6 +126,69 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Ha egy háznak csak egy másik házzal alkotott mettszetében található meg
+     * egy jelölt, akkor a másik ház mettszeten kívüli részéből törölhető a
+     * jelölt.
+     *
+     * @param tábla
+     */
+    private void mettszetKeresés(AbsztraktTábla tábla) {
+
+        // párosítás: minden mindennel, de önmagával nem
+        for (Iterator<SorOszlopBlokk> egyikBejáró = tábla.sorOszlopBlokkokBejáró(); egyikBejáró.hasNext();) {
+            SorOszlopBlokk egyikSorOszlopBlokk = egyikBejáró.next();
+            for (Iterator<SorOszlopBlokk> másikBejáró = tábla.sorOszlopBlokkokBejáró(); másikBejáró.hasNext();) {
+                SorOszlopBlokk másikSorOszlopBlokk = másikBejáró.next();
+                if (!egyikSorOszlopBlokk.equals(másikSorOszlopBlokk)) {
+                    Set<Cella> egyikCellák = egyikSorOszlopBlokk.getCellák();
+                    Set<Cella> másikCellák = másikSorOszlopBlokk.getCellák();
+                    Set<Cella> mettszetCellák = new HashSet<>(egyikCellák);
+                    mettszetCellák.retainAll(másikCellák);
+                    if (mettszetCellák.size() > 1) {
+
+                        Set<Cella> egyikKülönbség = new HashSet<>(egyikCellák);
+                        egyikKülönbség.removeAll(másikCellák);
+
+                        Set<Cella> másikKülönbség = new HashSet<>(másikCellák);
+                        másikKülönbség.removeAll(egyikCellák);
+
+                        for (int jelölt = 1; jelölt <= tábla.elemszám(); jelölt++) {
+                            if (benneVanACellákban(mettszetCellák, jelölt)) {
+//                                System.out.println(mettszetCellák);
+                                if (benneVanACellákban(egyikKülönbség, jelölt)) {
+                                    törölCellákból(másikKülönbség, jelölt);
+                                } else if (benneVanACellákban(másikKülönbség, jelölt)) {
+                                    törölCellákból(egyikKülönbség, jelölt);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // mettszetek képzése
+    }
+
+    private boolean benneVanACellákban(Set<Cella> cellák, int jelölt) {
+//        for (Cella cella : cellák) {
+//            if (cella.lehetMég(jelölt)) {
+//                return true;
+//            }
+//        }
+        if (cellák.stream().anyMatch((cella) -> (cella.lehetMég(jelölt)))) {
+            return true;
+        }
+        return false;
+    }
+
+    private void törölCellákból(Set<Cella> cellák, int jelölt) {
+        for (Cella cella : cellák) {
+            cella.töröl(jelölt);
         }
     }
 }
