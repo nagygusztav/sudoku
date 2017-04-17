@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,17 +34,24 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
         int korábbiHelyéreKerültElemekSzáma = tábla.helyéreKerültElemekSzáma();
         while (!tábla.megoldva()) {
 
-            // Műveletsor feldolgozása (NakedSingle)
-            if (tábla.vanMégMűvelet()) {
-                műveletFeldolgozó(tábla);
-            }
+//            // Műveletsor feldolgozása (NakedSingle)
+//            if (tábla.vanMégMűvelet()) {
+//                műveletFeldolgozó(tábla);
+//            }
+            // Alaplépés            
+            LOG.info("alaplépés előtt\ntábla:\n" + tábla.toString());
+            ismertCellaKeresés(tábla);
+            LOG.info("alaplépés után\ntábla:\n" + tábla.toString());
+
+            // Naked Single
+            egyJelöltesCellaKeresés(tábla);
+            LOG.info("egyjelöltes keresés után\ntábla:\n" + tábla.toString());
 
             // HiddenSingle
             egyediCellaKeresés(tábla);
 
-            // Intersection
-            mettszetKeresés(tábla);
-
+//            // Intersection
+//            mettszetKeresés(tábla);
             if (korábbiHelyéreKerültElemekSzáma == tábla.helyéreKerültElemekSzáma()) { // nincs javulás
                 LOG.info("Nem sikerült megoldani :-(");
                 break;
@@ -54,38 +60,78 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
         }
     }
 
-    private void műveletFeldolgozó(AbsztraktTábla tábla) {
-        AbsztraktMűvelet művelet = tábla.következőMűvelet();
-        while (művelet != null) {
-            if (művelet instanceof LehetőségTörölveMűvelet) { // NakedSingle
-                LehetőségTörölveMűvelet lehetőségTörölveMűvelet = (LehetőségTörölveMűvelet) művelet;
-                lehetőségekTörlése(lehetőségTörölveMűvelet);
-                if (!Tesztelő.érvényesE(tábla)) {
-                    return;
-                }
-            }
-            LOG.info(tábla.tartalomEllenőrzéshez());
-            művelet = tábla.következőMűvelet();
-        }
-    }
-
-    private void lehetőségekTörlése(LehetőségTörölveMűvelet lehetőségTörölveMűvelet) {
-        Cella cellaTörölt = lehetőségTörölveMűvelet.getCella();
-        int töröltLehetőség = lehetőségTörölveMűvelet.getTöröltLehetőség();
-        if (cellaTörölt.lehetMég(töröltLehetőség)) {
-            for (Iterator<SorOszlopBlokk> iSob = cellaTörölt.sorOszlopBlokkBejáró(); iSob.hasNext();) {
-                SorOszlopBlokk blokk = iSob.next();
-                for (Iterator<Cella> iCella = blokk.cellaBejáró(); iCella.hasNext();) {
-                    Cella cellaTörölhető = iCella.next();
-                    if (cellaTörölhető.töröl(töröltLehetőség)) {
-                        ;
+    /**
+     * Amennyiben egy cella értéke ismert, nincsenek jelöltjei, a vele egy
+     * sorban, oszlopban és blokkban lévő üres cellák jelöltjei közül
+     * eltávolíthatjuk ezt az értéket. Sorfolytonosan bejárjuk a táblát, ha
+     * olyan cellához érünk, aminek van értéke, akkor azt az értéket a cellával
+     * egy sorba, oszlopba, vagy blokkba, azaz egy házba tartozó mezők jelöltjei
+     * közül eltávolítjuk.
+     *
+     * @param tábla
+     */
+    private void ismertCellaKeresés(AbsztraktTábla tábla) {
+        for (Iterator<Cella> iCella = tábla.cellaBejáró(); iCella.hasNext();) {
+            Cella cella = iCella.next();
+            if (cella.kitöltve() && cella.jelöltekSzáma() > 0) {
+                int adat = cella.getAdat();
+                for (int i = 1; i <= tábla.elemszám(); i++) {
+                    if (i != adat && cella.lehetMég(i)) {
+                        cella.törölLehetőség(i);
+                        for (Iterator<SorOszlopBlokk> iSob = cella.sorOszlopBlokkBejáró(); iSob.hasNext();) {
+                            SorOszlopBlokk sob = iSob.next();
+                            sob.törölLehetőség(adat);
+                        }
                     }
                 }
+                cella.törölLehetőség(adat);
             }
-            cellaTörölt.törölMindenLehetőséget();
         }
     }
 
+    private void egyJelöltesCellaKeresés(AbsztraktTábla tábla) {
+        for (Iterator<Cella> iCella = tábla.cellaBejáró(); iCella.hasNext();) {
+            Cella cella = iCella.next();
+            if (cella.nincsKitöltve() && cella.jelöltekSzáma() == 1) {
+                int adat = cella.kitöltEgyetlenSzám();
+                for (Iterator<SorOszlopBlokk> iSob = cella.sorOszlopBlokkBejáró(); iSob.hasNext();) {
+                    SorOszlopBlokk sob = iSob.next();
+                    sob.törölLehetőség(adat);
+                }
+            }
+        }
+    }
+
+//    private void műveletFeldolgozó(AbsztraktTábla tábla) {
+//        AbsztraktMűvelet művelet = tábla.következőMűvelet();
+//        while (művelet != null) {
+//            if (művelet instanceof LehetőségTörölveMűvelet) { // NakedSingle
+//                LehetőségTörölveMűvelet lehetőségTörölveMűvelet = (LehetőségTörölveMűvelet) művelet;
+//                lehetőségekTörlése(lehetőségTörölveMűvelet);
+//                if (!Tesztelő.érvényesE(tábla)) {
+//                    return;
+//                }
+//            }
+//            LOG.info(tábla.tartalomEllenőrzéshez());
+//            művelet = tábla.következőMűvelet();
+//        }
+//    }
+//    private void lehetőségekTörlése(LehetőségTörölveMűvelet lehetőségTörölveMűvelet) {
+//        Cella cellaTörölt = lehetőségTörölveMűvelet.getCella();
+//        int töröltLehetőség = lehetőségTörölveMűvelet.getTöröltLehetőség();
+//        if (cellaTörölt.lehetMég(töröltLehetőség)) {
+//            for (Iterator<SorOszlopBlokk> iSob = cellaTörölt.sorOszlopBlokkBejáró(); iSob.hasNext();) {
+//                SorOszlopBlokk blokk = iSob.next();
+//                for (Iterator<Cella> iCella = blokk.cellaBejáró(); iCella.hasNext();) {
+//                    Cella cellaTörölhető = iCella.next();
+//                    if (cellaTörölhető.töröl(töröltLehetőség)) {
+//                        ;
+//                    }
+//                }
+//            }
+//            cellaTörölt.törölMindenLehetőséget();
+//        }
+//    }
     /**
      * Van olyan sor/oszlop/blokk, amiben egyedi elem van? (HiddenSingle)
      *
@@ -188,7 +234,7 @@ public class EgyszerűMegoldó extends AbsztraktMegoldó {
 
     private void törölCellákból(Set<Cella> cellák, int jelölt) {
         for (Cella cella : cellák) {
-            cella.töröl(jelölt);
+            cella.törölLehetőség(jelölt);
         }
     }
 }

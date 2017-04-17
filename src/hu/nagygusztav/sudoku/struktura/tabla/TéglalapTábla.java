@@ -2,7 +2,9 @@ package hu.nagygusztav.sudoku.struktura.tabla;
 
 import hu.nagygusztav.sudoku.struktura.Cella;
 import hu.nagygusztav.sudoku.struktura.SorOszlopBlokk;
-import java.util.BitSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -18,8 +20,8 @@ abstract class TéglalapTábla extends AbsztraktTábla {
     private static final Logger LOG = Logger.getLogger(TéglalapTábla.class.getName());
 
 //    protected final BitSet TELJES_CELLA_BITSET = new BitSet();
-
     protected final Cella[][] cellák;
+    private final List<Cella> cellákListája = new ArrayList<>();
 
     public TéglalapTábla(int sorokSzáma, int oszlopokSzáma, int elemszám) {
 
@@ -30,12 +32,12 @@ abstract class TéglalapTábla extends AbsztraktTábla {
 //        for (int i = 1; i <= elemszám; i++) {
 //            TELJES_CELLA_BITSET.set(i);
 //        }
-
         // Cellák létrehozása
         cellák = new Cella[sorokSzáma + 1][oszlopokSzáma + 1];
         for (int sor = 1; sor <= sorokSzáma; sor++) {
             for (int oszlop = 1; oszlop <= oszlopokSzáma; oszlop++) {
                 cellák[sor][oszlop] = new Cella(sor + "x" + oszlop, elemszám, this);
+                cellákListája.add(cellák[sor][oszlop]);
             }
         }
 
@@ -62,8 +64,23 @@ abstract class TéglalapTábla extends AbsztraktTábla {
         }
     }
 
+//    @Override
+//    public String tartalomEllenőrzéshez() {
+//        return toString();
+//    }
+
     @Override
-    public String tartalomEllenőrzéshez() {
+    public int elemszám() {
+        return elemszám;
+    }
+
+    @Override
+    public int cellaszám() {
+        return sorokSzáma * oszlopokSzáma;
+    }
+
+    @Override
+    public String toString() {
         StringBuilder író = new StringBuilder();
         író.append("Helyére került: ").append(helyéreKerültElemekSzáma)
                 .append("\n Hátra van: ").append(elemszám * elemszám - helyéreKerültElemekSzáma)
@@ -80,12 +97,7 @@ abstract class TéglalapTábla extends AbsztraktTábla {
     }
 
     @Override
-    public int elemszám() {
-        return elemszám;
+    public Iterator<Cella> cellaBejáró() {
+        return cellákListája.iterator();
     }
-
-    @Override
-    public int cellaszám() {
-        return sorokSzáma * oszlopokSzáma;
-    }    
 }

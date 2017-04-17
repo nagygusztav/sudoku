@@ -9,13 +9,29 @@ public class Feladvány {
     // hibagyanús feladathoz: http://sudokuonline.hu/info/megoldo.html
 
     public static final String[] négyszerNégyesek = {
-        "0010000341003000",
-        "0000300000041030",
-        "0000004240000030",
-        "00100000003021030"
+        "" // 0.:
+            + "0010"
+            + "0003"
+            + "4100"
+            + "3000",
+        "" // 1.:
+            + "0000"
+            + "3000"
+            + "0004"
+            + "1030",
+        "" // 2.:
+            + "0000"
+            + "0042"
+            + "4000"
+            + "0030",
+        "" // 3.:
+            + "0010"
+            + "0000"
+            + "0030"
+            + "2103"
     };
     public static final String[] kilencszerKilencesek = {
-        ""
+        "" // 0.:
         + "972000106"
         + "100800200"
         + "060000500"

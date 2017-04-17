@@ -50,4 +50,12 @@ public final class SorOszlopBlokk {
     public Set<Cella> getCellák() {
         return new HashSet<>(cellák);
     }
+
+    public void törölLehetőség(int lehetőség) {
+        for (Cella cella : cellák) {
+            if (cella.getAdat() != lehetőség) {
+                cella.törölLehetőség(lehetőség);
+            }
+        }
+    }
 }

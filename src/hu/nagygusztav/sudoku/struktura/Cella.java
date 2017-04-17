@@ -101,7 +101,7 @@ public class Cella {
     }
 
     /**
-     * Az eddigi lehetőségek megszűnnek, mert a szám lesz a megoldás.
+     * Ez a szám lesz a megoldás.
      *
      * @param szám
      */
@@ -116,7 +116,7 @@ public class Cella {
         adat = szám;
 
         tábla.helyemreKerültem();
-        tábla.újMűvelet(new LehetőségTörölveMűvelet(this, szám));
+//        tábla.újMűvelet(new LehetőségTörölveMűvelet(this, szám));
     }
 
     @Override
@@ -158,16 +158,16 @@ public class Cella {
      * @param töröltLehetőség
      * @return Volt-e tényleges törlés.
      */
-    public boolean töröl(int töröltLehetőség) {
+    public boolean törölLehetőség(int töröltLehetőség) {
         if (lehetőségek.get(töröltLehetőség)) {
             lehetőségek.clear(töröltLehetőség);
-            if (!kitöltve && lehetőségek.cardinality() == 1) { // most lett kész!
-                try {
-                    kitölt(lehetőségek.nextSetBit(0));
-                } catch (IllegalArgumentException ex) {
-                    ;
-                }
-            }
+//            if (!kitöltve && lehetőségek.cardinality() == 1) { // most lett kész!
+//                try {
+//                    kitölt(lehetőségek.nextSetBit(0));
+//                } catch (IllegalArgumentException ex) {
+//                    ;
+//                }
+//            }
             return true;
         } else {
             return false;
@@ -189,5 +189,18 @@ public class Cella {
      */
     public void törölMindenLehetőséget() {
         lehetőségek.clear();
+    }
+
+    public int jelöltekSzáma() {
+        return lehetőségek.cardinality();
+    }
+
+    public int kitöltEgyetlenSzám() {
+        if (lehetőségek.cardinality() != 1) {
+            throw new IllegalArgumentException("Nem csak egy jelölt van!");
+        }
+        int jelölt = lehetőségek.nextSetBit(0);
+        kitölt(jelölt);
+        return jelölt;
     }
 }

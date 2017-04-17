@@ -17,6 +17,12 @@ public class Tesztelő {
 
     private static final Logger LOG = Logger.getLogger(Tesztelő.class.getName());
 
+    /**
+     * Egy adott kitöltés nem mond-e ellent a szabályoknak.
+     *
+     * @param tábla
+     * @return
+     */
     public static boolean érvényesE(AbsztraktTábla tábla) {
         LOG.info("Érvényes-e ellenőrzés: \n");
         LOG.info(tábla.toString());
@@ -42,9 +48,15 @@ public class Tesztelő {
         return vissza;
     }
 
+    /**
+     * Egy adott kitöltés elkészült-e
+     *
+     * @param tábla
+     * @return
+     */
     public static boolean elkészültE(AbsztraktTábla tábla) {
         LOG.info("Elkészült-e ellenőrzés: ");
-        LOG.info(tábla.tartalomEllenőrzéshez());
+        LOG.info(tábla.toString());
         boolean vissza = true;
         for (Iterator<SorOszlopBlokk> iSob = tábla.sorOszlopBlokkokBejáró(); iSob.hasNext();) {
             SorOszlopBlokk blokk = iSob.next();

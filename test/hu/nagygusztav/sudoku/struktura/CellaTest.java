@@ -74,8 +74,8 @@ public class CellaTest {
         Cella cella = new Cella("1x1", 9, tábla);
         assertEquals("1x1: -(123456789)", cella.toString());
 
-        cella.töröl(3);
-        cella.töröl(7);
+        cella.törölLehetőség(3);
+        cella.törölLehetőség(7);
         assertEquals("1x1: -(12.456.89)", cella.toString());
 
         cella.kitölt(5);
@@ -164,7 +164,7 @@ public class CellaTest {
         Cella cella = new Cella("xy", lehetőségekSzáma, tábla);
 
         for (int i = 1; i <= lehetőségekSzáma; i += 2) {
-            cella.töröl(i);
+            cella.törölLehetőség(i);
         }
         for (int i = 1; i <= lehetőségekSzáma; i++) {
             assertTrue(cella.lehetMég(i) == (i % 2 == 0));
