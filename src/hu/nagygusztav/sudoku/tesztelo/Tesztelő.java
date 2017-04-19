@@ -64,7 +64,7 @@ public class Tesztelő {
                 Cella cella = iCella.next();
                 if (!cella.kitöltve()) {
                     vissza = false;
-                    LOG.info("Nincs kitöltve: " + cella);
+//                    LOG.log(Level.INFO, "Nincs kitöltve: {0}", cella);
                 }
             }
         }

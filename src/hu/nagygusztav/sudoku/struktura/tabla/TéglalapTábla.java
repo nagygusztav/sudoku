@@ -88,7 +88,7 @@ abstract class TéglalapTábla extends AbsztraktTábla {
 
         for (int sor = 1; sor <= sorokSzáma; sor++) {
             for (int oszlop = 1; oszlop <= oszlopokSzáma; oszlop++) {
-                író.append(cellák[sor][oszlop].toString()).append(" ");
+                író.append(cellák[sor][oszlop].csakALényegNévNélkül()).append(" ");
             }
             író.append('\n');
         }

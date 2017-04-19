@@ -53,9 +53,34 @@ public final class SorOszlopBlokk {
 
     public void törölLehetőség(int lehetőség) {
         for (Cella cella : cellák) {
-            if (cella.getAdat() != lehetőség) {
-                cella.törölLehetőség(lehetőség);
-            }
+//            if (cella.getAdat() != lehetőség) {
+            cella.törölLehetőség(lehetőség);
+//            }
         }
+    }
+
+    /**
+     * Jelöltenként kikeresi, melyik cellákban lehetnek még.
+     * 
+     * @return lista a lehetséges cellákkal.
+     */
+    public List<Cella>[] jelöltElőfordulásokKeresése() {
+        
+        // előkészítés
+        List<Cella>[] jelöltElőfordulások = new List[tábla.elemszám() + 1];
+        for (int i = 1; i <= tábla.elemszám(); i++) {
+            jelöltElőfordulások[i] = new ArrayList<>();
+        }
+        
+        // kikeresés:
+        for (Cella cella : cellák) {
+            for (int i=1; i<cella.lehetőségekSzáma(); i++) {
+                if (cella.lehetMég(i)) {
+                    jelöltElőfordulások[i].add(cella);
+                }
+            }
+        }            
+            
+        return jelöltElőfordulások;
     }
 }

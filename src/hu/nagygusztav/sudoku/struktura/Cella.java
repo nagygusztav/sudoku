@@ -1,12 +1,12 @@
 package hu.nagygusztav.sudoku.struktura;
 
-import hu.nagygusztav.sudoku.muvelet.LehetőségTörölveMűvelet;
 import hu.nagygusztav.sudoku.struktura.tabla.AbsztraktTábla;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -14,11 +14,11 @@ import java.util.logging.Logger;
  * @author Nagy Gusztáv
  */
 public class Cella {
-
+    
     private static final Logger LOG = Logger.getLogger(Cella.class.getName());
-
+    
     public static final int NINCSKITOLTVE = 0;
-
+    
     private boolean kitöltve = false;
     private final String szövegesAzonosító;
     private final List<SorOszlopBlokk> sorOszlopBlokkokRésze = new ArrayList<>();
@@ -41,15 +41,15 @@ public class Cella {
         }
         this.tábla = tábla;
     }
-
+    
     public void újSorOszlopBlokk(SorOszlopBlokk új) {
         sorOszlopBlokkokRésze.add(új);
     }
-
+    
     public Iterator<SorOszlopBlokk> sorOszlopBlokkBejáró() {
         return sorOszlopBlokkokRésze.iterator();
     }
-
+    
     @Override
     public String toString() {
         StringBuilder építő = new StringBuilder();
@@ -65,10 +65,26 @@ public class Cella {
             }
         }
         építő.append(")");
-
+        
         return építő.toString();
     }
-
+    
+    public String csakALényegNévNélkül() {
+        StringBuilder építő = new StringBuilder();
+        építő.append(kitöltve ? "" + adat : "-");
+        építő.append("(");
+        for (int i = 1; i <= tábla.elemszám(); i++) {
+            if (lehetőségek.get(i)) {
+                építő.append(i);
+            } else {
+                építő.append(".");
+            }
+        }
+        építő.append(")");
+        
+        return építő.toString();
+    }
+    
     public String getSzövegesAzonosító() {
         return szövegesAzonosító;
     }
@@ -114,11 +130,11 @@ public class Cella {
         }
         kitöltve = true;
         adat = szám;
-
+        
         tábla.helyemreKerültem();
 //        tábla.újMűvelet(new LehetőségTörölveMűvelet(this, szám));
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -127,7 +143,7 @@ public class Cella {
         hash = 97 * hash + lehetőségekSzáma;
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -161,13 +177,6 @@ public class Cella {
     public boolean törölLehetőség(int töröltLehetőség) {
         if (lehetőségek.get(töröltLehetőség)) {
             lehetőségek.clear(töröltLehetőség);
-//            if (!kitöltve && lehetőségek.cardinality() == 1) { // most lett kész!
-//                try {
-//                    kitölt(lehetőségek.nextSetBit(0));
-//                } catch (IllegalArgumentException ex) {
-//                    ;
-//                }
-//            }
             return true;
         } else {
             return false;
@@ -191,10 +200,20 @@ public class Cella {
         lehetőségek.clear();
     }
 
+    /**
+     * Hány jelölt van még?
+     *
+     * @return
+     */
     public int jelöltekSzáma() {
         return lehetőségek.cardinality();
     }
 
+    /**
+     * Ha már csak egy lehetőség van, akkor kitölt az egyetlen lehetőséggel.
+     *
+     * @return
+     */
     public int kitöltEgyetlenSzám() {
         if (lehetőségek.cardinality() != 1) {
             throw new IllegalArgumentException("Nem csak egy jelölt van!");
@@ -203,4 +222,27 @@ public class Cella {
         kitölt(jelölt);
         return jelölt;
     }
+
+    /**
+     * Hány lehetőség van elvi szinten?
+     *
+     * @return
+     */
+    public int lehetőségekSzáma() {
+        return lehetőségekSzáma;
+    }
+    
+    public void törölLehetőségek(Set<Integer> közösJelöltek) {
+        for (Integer törlendőJelölt : közösJelöltek) {
+            lehetőségek.clear(törlendőJelölt);
+        }
+    }
+    
+    public void törölMásLehetőségek(Set<Integer> maradóJelöltek) {
+        for (int i = 1; i <= lehetőségekSzáma; i++) {
+            if (!maradóJelöltek.contains(i)) {
+                lehetőségek.clear(i);
+            }
+        }
+    }    
 }
